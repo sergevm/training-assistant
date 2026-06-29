@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct TrainingAssistantApp: App {
@@ -13,5 +14,6 @@ struct TrainingAssistantApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: [TrainingClass.self, ScheduleEntry.self])
     }
 }

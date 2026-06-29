@@ -6,19 +6,40 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            VStack(spacing: 24) {
+                Image(systemName: "dog.fill")
+                    .imageScale(.large)
+                    .font(.system(size: 48))
+                    .foregroundStyle(.tint)
+                Text("Training Assistant")
+                    .font(.title2.weight(.semibold))
+                Text("Set up your school's classes and weekly schedule in Settings.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+            }
+            .padding()
+            .navigationTitle("Training Assistant")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        SettingsView()
+                    } label: {
+                        Label("Settings", systemImage: "gearshape")
+                    }
+                }
+            }
         }
-        .padding()
     }
 }
 
 #Preview {
     ContentView()
+        .modelContainer(for: [TrainingClass.self, ScheduleEntry.self], inMemory: true)
 }
