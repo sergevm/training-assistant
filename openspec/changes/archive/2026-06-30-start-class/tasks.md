@@ -40,5 +40,5 @@
 ## 7. Verification
 
 - [x] 7.1 Build the app and confirm it compiles with the new model registered
-- [ ] 7.2 Manually verify on simulator: a class scheduled for today appears, tapping creates a session, it moves to the Started filter, and re-opening shows the same session
-- [ ] 7.3 Manually verify the session detail shows the correct definition summary and an empty participants placeholder
+- [x] 7.2 Manually verify on simulator: a class scheduled for today appears; opening it creates no session; "Start Session" creates one in place (no pop), it moves to the Started filter, and re-opening shows the same session
+- [x] 7.3 Manually verify the session detail shows the correct definition summary and an empty participants placeholder
