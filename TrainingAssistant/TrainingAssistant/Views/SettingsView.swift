@@ -72,6 +72,7 @@ struct SettingsView: View {
         let name = trimmedNewName
         guard !name.isEmpty else { return }
         modelContext.insert(TrainingClass(name: name))
+        try? modelContext.save()
         newClassName = ""
     }
 
@@ -79,6 +80,7 @@ struct SettingsView: View {
         for index in offsets {
             modelContext.delete(classes[index])
         }
+        try? modelContext.save()
     }
 }
 

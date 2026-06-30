@@ -74,11 +74,14 @@ struct ScheduleEntryEditorView: View {
         let entry = ScheduleEntry(
             dayOfWeek: selectedDay.rawValue,
             startHour: hour,
-            startMinute: minute,
-            trainingClass: trainingClass
+            startMinute: minute
         )
         modelContext.insert(entry)
+        // Appending maintains the inverse (entry.trainingClass); setting both
+        // sides would double-link. Save now so the entry is durably persisted
+        // before we navigate away.
         trainingClass.schedule.append(entry)
+        try? modelContext.save()
         dismiss()
     }
 
