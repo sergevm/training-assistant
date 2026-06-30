@@ -23,6 +23,25 @@ The system SHALL allow the user to create a class identified by a name. The name
 - **WHEN** the user attempts to create a class with an empty or whitespace-only name
 - **THEN** the system does not create the class and the confirm action remains disabled or surfaces a validation message
 
+### Requirement: Class names are unique
+
+The system SHALL NOT create or rename a class such that its name duplicates another class. Names MUST be compared after trimming surrounding whitespace and case-insensitively, and a class is never compared against itself.
+
+#### Scenario: Reject a duplicate name on create
+
+- **WHEN** the user attempts to create a class whose trimmed name matches an existing class name, ignoring case
+- **THEN** the system does not create the class and surfaces a message indicating a class with that name already exists
+
+#### Scenario: Reject a duplicate name on rename
+
+- **WHEN** the user renames a class to a trimmed name that matches a different existing class, ignoring case
+- **THEN** the system does not apply the rename, reverts to the previous name, and surfaces a message indicating a class with that name already exists
+
+#### Scenario: Names differing only by case or surrounding whitespace are duplicates
+
+- **WHEN** a class named "A class" exists and the user enters " a class " for another class
+- **THEN** the system treats it as a duplicate and does not save it
+
 ### Requirement: List classes
 
 The system SHALL display all persisted classes in the Settings area, ordered by name.
@@ -39,7 +58,7 @@ The system SHALL display all persisted classes in the Settings area, ordered by 
 
 ### Requirement: Edit a class name
 
-The system SHALL allow the user to rename an existing class, subject to the same non-empty validation as creation.
+The system SHALL allow the user to rename an existing class, subject to the same non-empty and uniqueness validation as creation.
 
 #### Scenario: Rename a class
 

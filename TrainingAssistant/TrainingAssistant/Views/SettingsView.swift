@@ -14,6 +14,7 @@ struct SettingsView: View {
 
     @State private var isAddingClass = false
     @State private var newClassName = ""
+    @State private var showsDuplicateAlert = false
 
     var body: some View {
         Group {
@@ -57,10 +58,21 @@ struct SettingsView: View {
         } message: {
             Text("Enter a name for the class.")
         }
+        .alert("Class Already Exists", isPresented: $showsDuplicateAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("A class named “\(trimmedNewName)” already exists.")
+        }
     }
 
     private var trimmedNewName: String {
         newClassName.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    /// A class with the same name already exists (compared case-insensitively, trimmed).
+    private var isDuplicateName: Bool {
+        let candidate = trimmedNewName.lowercased()
+        return classes.contains { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == candidate }
     }
 
     private func startAddingClass() {
@@ -71,6 +83,10 @@ struct SettingsView: View {
     private func addClass() {
         let name = trimmedNewName
         guard !name.isEmpty else { return }
+        guard !isDuplicateName else {
+            showsDuplicateAlert = true
+            return
+        }
         modelContext.insert(TrainingClass(name: name))
         try? modelContext.save()
         newClassName = ""
