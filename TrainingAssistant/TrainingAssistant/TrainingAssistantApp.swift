@@ -14,6 +14,6 @@ struct TrainingAssistantApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: [TrainingClass.self, ScheduleEntry.self])
+        .modelContainer(for: [TrainingClass.self, ScheduleEntry.self, ClassSession.self])
     }
 }

@@ -23,6 +23,13 @@ struct ContentView: View {
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
+
+                NavigationLink {
+                    TodayClassesView()
+                } label: {
+                    Label("Today's Classes", systemImage: "calendar.day.timeline.left")
+                }
+                .buttonStyle(.borderedProminent)
             }
             .padding()
             .navigationTitle("Training Assistant")
@@ -41,5 +48,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: [TrainingClass.self, ScheduleEntry.self], inMemory: true)
+        .modelContainer(for: [TrainingClass.self, ScheduleEntry.self, ClassSession.self], inMemory: true)
 }
