@@ -10,14 +10,27 @@ import SwiftData
 
 struct ClassEditorView: View {
     @Environment(\.modelContext) private var modelContext
-    @Bindable var trainingClass: TrainingClass
+    @Query private var classes: [TrainingClass]
+    let trainingClass: TrainingClass
 
     @State private var isAddingEntry = false
+    /// Edited name is held locally and only committed when valid, so a blank or
+    /// duplicate name is never written to the model.
+    @State private var draftName: String
+    @State private var showsDuplicateAlert = false
+    /// The rejected name to show in the duplicate alert (draftName is reverted by then).
+    @State private var duplicateName = ""
+
+    init(trainingClass: TrainingClass) {
+        self.trainingClass = trainingClass
+        _draftName = State(initialValue: trainingClass.name)
+    }
 
     var body: some View {
         Form {
             Section("Name") {
-                TextField("Class name", text: $trainingClass.name)
+                TextField("Class name", text: $draftName)
+                    .onSubmit { commitName(surfaceAlert: true) }
             }
 
             Section("Weekly Schedule") {
@@ -40,9 +53,40 @@ struct ClassEditorView: View {
         }
         .navigationTitle(trainingClass.name.isEmpty ? "Class" : trainingClass.name)
         .navigationBarTitleDisplayMode(.inline)
+        .onDisappear { commitName(surfaceAlert: false) }
         .sheet(isPresented: $isAddingEntry) {
             ScheduleEntryEditorView(trainingClass: trainingClass)
         }
+        .alert("Class Already Exists", isPresented: $showsDuplicateAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("A class named “\(duplicateName)” already exists.")
+        }
+    }
+
+    /// Commit the edited name if it is non-empty and not a duplicate of another
+    /// class (trimmed, case-insensitive); otherwise revert to the saved name.
+    private func commitName(surfaceAlert: Bool) {
+        let name = draftName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else {
+            draftName = trainingClass.name
+            return
+        }
+        let isDuplicate = classes.contains { other in
+            other.id != trainingClass.id
+                && other.name.trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(name) == .orderedSame
+        }
+        guard !isDuplicate else {
+            if surfaceAlert {
+                duplicateName = name
+                showsDuplicateAlert = true
+            }
+            draftName = trainingClass.name
+            return
+        }
+        guard name != trainingClass.name else { return }
+        trainingClass.name = name
+        try? modelContext.save()
     }
 
     /// Schedule ordered by day-of-week then start hour.

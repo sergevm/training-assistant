@@ -14,6 +14,7 @@
 
 - [x] 3.1 In `SettingsView`, `@Query` and list classes ordered by name, with an empty-state message when none exist
 - [x] 3.2 Add "create class" flow with non-empty (trimmed) name validation; disable confirm on blank input
+- [x] 3.5 Enforce unique class names on create AND rename (trimmed, case-insensitive, excluding self); surface an "already exists" message and block/revert the duplicate
 - [x] 3.3 Add swipe-to-delete on a class that cascade-deletes its schedule entries
 - [x] 3.4 Navigate from a class row into `ClassEditorView`
 
@@ -28,6 +29,6 @@
 
 ## 5. Verification
 
-- [ ] 5.1 Build and run on the iOS 26 iPhone simulator; create a class, add multiple entries (incl. same day twice and across days), edit, and delete
-- [ ] 5.2 Verify persistence by relaunching the app and confirming classes and schedules remain
-- [ ] 5.3 Verify duplicate prevention and blank-name validation behave per the specs
+- [x] 5.1 Build and run on the iOS 26 iPhone simulator; create a class, add multiple entries (incl. same day twice and across days), edit, and delete
+- [x] 5.2 Verify persistence by relaunching the app and confirming classes and schedules remain
+- [x] 5.3 Verify duplicate prevention (schedule entries AND class names) and blank-name validation behave per the specs
