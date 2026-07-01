@@ -112,6 +112,9 @@ private struct OccurrenceRow: View {
             Spacer()
             statusBadge
         }
+        // Make the whole row tappable, not just the text/badge — the Spacer gap
+        // is otherwise not hittable under .buttonStyle(.plain).
+        .contentShape(Rectangle())
     }
 
     @ViewBuilder

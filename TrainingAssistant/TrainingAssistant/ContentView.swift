@@ -30,6 +30,13 @@ struct ContentView: View {
                     Label("Today's Classes", systemImage: "calendar.day.timeline.left")
                 }
                 .buttonStyle(.borderedProminent)
+
+                NavigationLink {
+                    SessionHistoryView()
+                } label: {
+                    Label("History", systemImage: "clock.arrow.circlepath")
+                }
+                .buttonStyle(.bordered)
             }
             .padding()
             .navigationTitle("Training Assistant")
