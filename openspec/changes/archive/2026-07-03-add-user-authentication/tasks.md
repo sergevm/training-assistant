@@ -1,18 +1,18 @@
 ## 1. Supabase project setup (outside repo — prerequisite for testing)
 
-- [ ] 1.1 Create the Supabase project (or dedicated environment) for TrainingAssistant
-- [ ] 1.2 Enable Apple and Google providers in Supabase Auth settings, using
+- [x] 1.1 Create the Supabase project (or dedicated environment) for TrainingAssistant
+- [x] 1.2 Enable Apple and Google providers in Supabase Auth settings, using
       OAuth client credentials from each vendor's developer console (Facebook deferred)
-- [ ] 1.3 Create the `invited_users` table (`email`, `invited_by`, `invited_at`,
+- [x] 1.3 Create the `invited_users` table (`email`, `invited_by`, `invited_at`,
       `claimed_at`)
-- [ ] 1.4 Install a "Before User Created" Auth Hook (Postgres function) that rejects
+- [x] 1.4 Install a "Before User Created" Auth Hook (Postgres function) that rejects
       signup when `user.email` is not present in `invited_users`
-- [ ] 1.5 Insert at least one test email into `invited_users` for manual verification
+- [x] 1.5 Insert at least one test email into `invited_users` for manual verification
 
 ## 2. Xcode project setup
 
-- [ ] 2.1 Add the `supabase-swift` package (Auth module) via Swift Package Manager
-- [ ] 2.2 Enable the "Sign in with Apple" capability in the Xcode project
+- [x] 2.1 Add the `supabase-swift` package (Auth module) via Swift Package Manager
+- [x] 2.2 Enable the "Sign in with Apple" capability in the Xcode project
 - [x] 2.3 Add Supabase project URL/anon key configuration (e.g. an `.xcconfig` or
       plist entry, not hardcoded/committed as a secret)
       <!-- Code mechanism done: SupabaseConfig loader + Supabase-Info.example.plist
@@ -49,12 +49,12 @@
 
 ## 5. Manual verification
 
-- [ ] 5.1 Attempt signup with a non-invited email via Apple and Google —
+- [x] 5.1 Attempt signup with a non-invited email via Apple and Google —
       confirm rejection with a clear message and no row created in Supabase
       `auth.users` for either
-- [ ] 5.2 Complete signup with the pre-invited test email via each provider
+- [x] 5.2 Complete signup with the pre-invited test email via each provider
       (Apple, Google) — confirm each lands signed-in on `ContentView`
-- [ ] 5.3 Force-quit and relaunch the app while signed in — confirm the session
+- [x] 5.3 Force-quit and relaunch the app while signed in — confirm the session
       persists and no re-login is required
-- [ ] 5.4 Sign out — confirm the app returns to `LoginView` and all existing local
+- [x] 5.4 Sign out — confirm the app returns to `LoginView` and all existing local
       class/schedule/session data remains intact
