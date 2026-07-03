@@ -24,5 +24,5 @@ struct RootView: View {
 #Preview {
     RootView()
         .environment(AuthService())
-        .modelContainer(for: [TrainingClass.self, ScheduleEntry.self, ClassSession.self], inMemory: true)
+        .modelContainer(for: [TrainingClass.self, ScheduleEntry.self, ClassSession.self, Combination.self], inMemory: true)
 }
