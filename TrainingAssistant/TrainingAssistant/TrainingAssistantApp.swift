@@ -11,6 +11,7 @@ import SwiftData
 @main
 struct TrainingAssistantApp: App {
     let container: ModelContainer
+    @State private var authService = AuthService()
 
     init() {
         container = Self.makeContainer()
@@ -18,7 +19,8 @@ struct TrainingAssistantApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
+                .environment(authService)
         }
         .modelContainer(container)
     }
