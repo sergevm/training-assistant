@@ -5,6 +5,10 @@
 ## User settings
 xcuserdata/
 
+## Supabase — real config with the project key stays out of source control.
+## Copy supabase/Supabase-Info.example.plist to create it. See supabase/README.md.
+Supabase-Info.plist
+
 ## Obj-C/Swift specific
 *.hmap
 

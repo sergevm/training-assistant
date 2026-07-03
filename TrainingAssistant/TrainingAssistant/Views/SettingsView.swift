@@ -10,11 +10,13 @@ import SwiftData
 
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(AuthService.self) private var authService
     @Query(sort: \TrainingClass.name) private var classes: [TrainingClass]
 
     @State private var isAddingClass = false
     @State private var newClassName = ""
     @State private var showsDuplicateAlert = false
+    @State private var showsSignOutConfirmation = false
 
     var body: some View {
         Group {
@@ -42,6 +44,13 @@ struct SettingsView: View {
         }
         .navigationTitle("Classes")
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(role: .destructive) {
+                    showsSignOutConfirmation = true
+                } label: {
+                    Label("Sign Out", systemImage: "rectangle.portrait.and.arrow.right")
+                }
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     startAddingClass()
@@ -49,6 +58,18 @@ struct SettingsView: View {
                     Label("Add Class", systemImage: "plus")
                 }
             }
+        }
+        .confirmationDialog(
+            "Sign out of Training Assistant?",
+            isPresented: $showsSignOutConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Sign Out", role: .destructive) {
+                Task { await authService.signOut() }
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Your classes and schedule stay on this device.")
         }
         .alert("New Class", isPresented: $isAddingClass) {
             TextField("Class name", text: $newClassName)
@@ -118,5 +139,6 @@ private struct ClassRow: View {
     NavigationStack {
         SettingsView()
     }
+    .environment(AuthService())
     .modelContainer(for: [TrainingClass.self, ScheduleEntry.self], inMemory: true)
 }
