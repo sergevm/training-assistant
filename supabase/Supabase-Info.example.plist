@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Template for the app's Supabase configuration.
+
+  Copy this file to:
+      TrainingAssistant/TrainingAssistant/Supabase-Info.plist
+  fill in the values from your Supabase project (Project Settings → API), and
+  confirm it is a member of the TrainingAssistant target. The real file is
+  git-ignored so each environment can use its own project.
+
+  SUPABASE_REDIRECT_URL is only needed for the browser-based Google flow:
+  set it to a custom scheme you also (a) add under the target's Info →
+  URL Types, and (b) allow-list in Supabase Auth → URL Configuration.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>SUPABASE_URL</key>
+    <string>https://YOUR-PROJECT-ref.supabase.co</string>
+    <key>SUPABASE_ANON_KEY</key>
+    <string>YOUR-ANON-OR-PUBLISHABLE-KEY</string>
+    <key>SUPABASE_REDIRECT_URL</key>
+    <string>com.softwareprojects.trainingassistant://login-callback</string>
+</dict>
+</plist>
