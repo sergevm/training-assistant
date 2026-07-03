@@ -88,24 +88,6 @@ struct LoginView: View {
                 return
             }
 
-            // TEMPORARY DIAGNOSTIC — remove once the invite/email issue is resolved.
-            // Shows the email Apple actually put in the identity token and whether it's a
-            // private-relay ("Hide My Email") alias — that value is exactly what the invite
-            // hook compares against `invited_users`.
-            print("🔎 credential.email =", credential.email ?? "nil (Apple only sends this on the FIRST authorization)")
-            let tokenParts = idToken.split(separator: ".")
-            if tokenParts.count >= 2 {
-                var base64 = String(tokenParts[1])
-                    .replacingOccurrences(of: "-", with: "+")
-                    .replacingOccurrences(of: "_", with: "/")
-                while base64.count % 4 != 0 { base64 += "=" }
-                if let data = Data(base64Encoded: base64),
-                   let claims = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
-                    print("🔎 token email =", claims["email"] ?? "nil")
-                    print("🔎 token is_private_email =", claims["is_private_email"] ?? "nil")
-                }
-            }
-
             Task { await authService.signInWithApple(idToken: idToken, nonce: nonce) }
         case .failure(let error):
             authService.report(error)
