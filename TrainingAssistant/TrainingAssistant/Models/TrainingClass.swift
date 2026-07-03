@@ -18,6 +18,12 @@ final class TrainingClass {
     @Relationship(deleteRule: .cascade, inverse: \ScheduleEntry.trainingClass)
     var schedule: [ScheduleEntry]
 
+    /// Combinations currently assigned to this class. Deleting the class only
+    /// nullifies their `currentClass` — a combination is a real handler/dog
+    /// and must outlive the class it was in.
+    @Relationship(deleteRule: .nullify, inverse: \Combination.currentClass)
+    var combinations: [Combination] = []
+
     init(id: UUID = UUID(), name: String, schedule: [ScheduleEntry] = []) {
         self.id = id
         self.name = name

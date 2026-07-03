@@ -37,6 +37,13 @@ struct ContentView: View {
                     Label("History", systemImage: "clock.arrow.circlepath")
                 }
                 .buttonStyle(.bordered)
+
+                NavigationLink {
+                    CombinationsView()
+                } label: {
+                    Label("Combinations", systemImage: "pawprint")
+                }
+                .buttonStyle(.bordered)
             }
             .padding()
             .navigationTitle("Training Assistant")
@@ -55,5 +62,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: [TrainingClass.self, ScheduleEntry.self, ClassSession.self], inMemory: true)
+        .modelContainer(for: [TrainingClass.self, ScheduleEntry.self, ClassSession.self, Combination.self], inMemory: true)
 }

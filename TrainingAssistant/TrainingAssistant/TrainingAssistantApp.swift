@@ -27,7 +27,7 @@ struct TrainingAssistantApp: App {
     /// This keeps the app usable across the schema changes of early development:
     /// an incompatible store is replaced rather than silently breaking every save.
     private static func makeContainer() -> ModelContainer {
-        let schema = Schema([TrainingClass.self, ScheduleEntry.self, ClassSession.self])
+        let schema = Schema([TrainingClass.self, ScheduleEntry.self, ClassSession.self, Combination.self])
         let configuration = ModelConfiguration(schema: schema)
         do {
             return try ModelContainer(for: schema, configurations: [configuration])

@@ -140,7 +140,7 @@ private struct OccurrenceRow: View {
 
 #Preview {
     let container = try! ModelContainer(
-        for: TrainingClass.self, ScheduleEntry.self, ClassSession.self,
+        for: TrainingClass.self, ScheduleEntry.self, ClassSession.self, Combination.self,
         configurations: ModelConfiguration(isStoredInMemoryOnly: true)
     )
 

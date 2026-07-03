@@ -148,7 +148,7 @@ struct ClassSessionView: View {
 
 #Preview("From occurrence") {
     let container = try! ModelContainer(
-        for: TrainingClass.self, ScheduleEntry.self, ClassSession.self,
+        for: TrainingClass.self, ScheduleEntry.self, ClassSession.self, Combination.self,
         configurations: ModelConfiguration(isStoredInMemoryOnly: true)
     )
 
@@ -167,7 +167,7 @@ struct ClassSessionView: View {
 
 #Preview("From history session") {
     let container = try! ModelContainer(
-        for: TrainingClass.self, ScheduleEntry.self, ClassSession.self,
+        for: TrainingClass.self, ScheduleEntry.self, ClassSession.self, Combination.self,
         configurations: ModelConfiguration(isStoredInMemoryOnly: true)
     )
 

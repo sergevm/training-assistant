@@ -122,5 +122,5 @@ private struct ScheduleEntryRow: View {
     NavigationStack {
         ClassEditorView(trainingClass: TrainingClass(name: "Puppy Class"))
     }
-    .modelContainer(for: [TrainingClass.self, ScheduleEntry.self], inMemory: true)
+    .modelContainer(for: [TrainingClass.self, ScheduleEntry.self, Combination.self], inMemory: true)
 }

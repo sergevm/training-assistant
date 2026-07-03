@@ -118,5 +118,5 @@ private struct ClassRow: View {
     NavigationStack {
         SettingsView()
     }
-    .modelContainer(for: [TrainingClass.self, ScheduleEntry.self], inMemory: true)
+    .modelContainer(for: [TrainingClass.self, ScheduleEntry.self, Combination.self], inMemory: true)
 }
