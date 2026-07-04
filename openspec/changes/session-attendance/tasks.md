@@ -42,3 +42,10 @@
 - [ ] 7.5 Open the same session from history → attendance is shown and manageable; no "Start Session" action; definition summary read-only
 - [ ] 7.6 Device: scan a URL QR (`member_id=…`) for a known member → same selection logic; scan an unknown `member_id` → member editor opens pre-filled; scan a non-URL code → "not recognized"; camera-permission prompt appears; scan entry hidden on the simulator
 - [ ] 7.7 Confirm all new views' SwiftUI `#Preview`s render
+
+## 8. Post-review fixes
+
+- [x] 8.1 Hoist the add-participant sheet from the attendance List section to the session detail (fixes first-open auto-dismiss)
+- [x] 8.2 A member attends a session once — de-dupe by member id; exclude recorded members from the list; reject re-add on scan
+- [x] 8.3 A dog trains with one member per session — exclude dogs already present from the choices and from the member list; guard on record
+- [ ] 8.4 Re-verify in the simulator: the same member is not re-addable, and a dog already present is not offered to another member

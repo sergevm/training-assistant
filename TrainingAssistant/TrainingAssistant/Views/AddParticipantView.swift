@@ -77,7 +77,7 @@ struct AddParticipantView: View {
                 MemberEditorView(member: member)
             }
             .confirmationDialog("Which dog?", isPresented: dogChoicePresented, presenting: dogChoiceMember) { member in
-                ForEach(activeCombinations(for: member)) { combination in
+                ForEach(availableCombinations(for: member)) { combination in
                     Button(combination.dog?.name ?? "Dog") {
                         record(combination)
                         dismiss()
@@ -127,12 +127,12 @@ struct AddParticipantView: View {
             )
             return
         }
-        let candidates = activeCombinations(for: member)
+        let candidates = availableCombinations(for: member)
         switch candidates.count {
         case 0:
             message = ScanMessage(
                 title: "No dog to record",
-                text: "\(displayName(member)) has no active dog to record."
+                text: "\(displayName(member)) has no available dog — their active dogs are already training in this session, or they have none active."
             )
         case 1:
             record(candidates[0])
@@ -143,7 +143,8 @@ struct AddParticipantView: View {
     }
 
     private func record(_ combination: Combination) {
-        guard let memberID = combination.member?.id, !presentMemberIDs.contains(memberID) else { return }
+        guard let memberID = combination.member?.id, let dogID = combination.dog?.id,
+              !presentMemberIDs.contains(memberID), !presentDogIDs.contains(dogID) else { return }
         let record = SessionAttendance(sessionID: sessionID, combination: combination, recordedAt: Date.now)
         modelContext.insert(record)
         try? modelContext.save()
@@ -189,9 +190,18 @@ struct AddParticipantView: View {
         Set(attendance.map(\.memberID))
     }
 
-    /// The member's active combinations, ordered by dog name.
-    private func activeCombinations(for member: Member) -> [Combination] {
+    /// Dogs already recorded present in this session (a dog trains once per session).
+    private var presentDogIDs: Set<UUID> {
+        Set(attendance.map(\.dogID))
+    }
+
+    /// The member's active combinations whose dog isn't already present, by dog name.
+    private func availableCombinations(for member: Member) -> [Combination] {
         member.activeCombinations
+            .filter { combination in
+                guard let dog = combination.dog else { return false }
+                return !presentDogIDs.contains(dog.id)
+            }
             .sorted { ($0.dog?.name ?? "").localizedCaseInsensitiveCompare($1.dog?.name ?? "") == .orderedAscending }
     }
 
@@ -199,6 +209,7 @@ struct AddParticipantView: View {
         let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         return members.filter { member in
             guard !presentMemberIDs.contains(member.id) else { return false }
+            guard !availableCombinations(for: member).isEmpty else { return false }
             guard !query.isEmpty else { return true }
             return member.firstName.lowercased().contains(query)
                 || member.lastName.lowercased().contains(query)

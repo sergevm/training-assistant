@@ -89,15 +89,17 @@ dogs. This path SHALL be available without a camera.
 - **WHEN** the user selects a member who trains more than one active dog
 - **THEN** the system prompts the user to choose which active dog to record
 
-### Requirement: A member with no active dog cannot be recorded
+### Requirement: A member with no available dog cannot be recorded
 
-The system SHALL record nothing, and SHALL explain why, when an identified member has no active
-dog.
+The system SHALL record nothing, and SHALL explain why, when an identified member has no dog
+available to record — either the member has no active dog, or every active dog is already
+recorded present in the session with another member.
 
-#### Scenario: Member has no active dog
+#### Scenario: Member has no available dog
 
-- **WHEN** the user identifies a member who trains no active dog
-- **THEN** the system records nothing and informs the user there is no active dog to record
+- **WHEN** the user identifies a member whose active dogs are all already recorded present, or
+  who has no active dog
+- **THEN** the system records nothing and informs the user there is no available dog to record
 
 ### Requirement: A member can attend a session only once
 
@@ -109,6 +111,18 @@ offered in the add-participant list.
 
 - **WHEN** the user tries to record a member already present in the session, with any dog
 - **THEN** the system does not add a second record and indicates the member is already recorded
+
+### Requirement: A dog can attend a session only once
+
+The system SHALL record each dog as present at most once per session; a dog already recorded with
+one member SHALL NOT be recorded again with another member. Dogs already recorded are not offered
+when choosing the dog to record.
+
+#### Scenario: A dog already present is not offered to another member
+
+- **WHEN** a dog is already recorded present in the session and the user identifies a different
+  member who also trains that dog
+- **THEN** the system does not offer that dog and does not record it a second time
 
 ### Requirement: Remove a participant from a session
 
