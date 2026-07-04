@@ -31,7 +31,7 @@ struct TrainingAssistantApp: App {
     private static func makeContainer() -> ModelContainer {
         let schema = Schema([
             TrainingClass.self, ScheduleEntry.self, ClassSession.self,
-            Member.self, Dog.self, Combination.self,
+            Member.self, Dog.self, Combination.self, SessionAttendance.self,
         ])
         let configuration = ModelConfiguration(schema: schema)
         do {

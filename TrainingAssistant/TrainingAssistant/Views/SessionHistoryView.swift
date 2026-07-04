@@ -99,7 +99,7 @@ struct SessionHistoryView: View {
 
 #Preview {
     let container = try! ModelContainer(
-        for: TrainingClass.self, ScheduleEntry.self, ClassSession.self, Member.self, Dog.self, Combination.self,
+        for: TrainingClass.self, ScheduleEntry.self, ClassSession.self, Member.self, Dog.self, Combination.self, SessionAttendance.self,
         configurations: ModelConfiguration(isStoredInMemoryOnly: true)
     )
 
