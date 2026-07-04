@@ -14,8 +14,8 @@
 //  - From history, driven by a persisted `ClassSession`: the summary is rendered
 //    from the session's own stored snapshot, so it displays correctly even if
 //    the originating class or slot was later edited or deleted. A session in
-//    history is by definition already started, so it always shows the
-//    participants placeholder and never the "Start Session" action.
+//    history is by definition already started, so it always shows the recorded
+//    attendance and never the "Start Session" action.
 //
 
 import SwiftUI
@@ -38,6 +38,7 @@ struct ClassSessionView: View {
     /// For the session (history) path this is unused; it's scoped to that
     /// session's own id so the query stays trivial.
     @Query private var slotSessions: [ClassSession]
+    @State private var isAddingParticipant = false
 
     init(occurrence: Occurrence) {
         self.source = .occurrence(occurrence)
@@ -65,13 +66,9 @@ struct ClassSessionView: View {
                 LabeledContent("Start", value: summaryStart)
             }
 
-            if isStarted {
-                Section("Participants") {
-                    ContentUnavailableView {
-                        Label("No Participants", systemImage: "person.2")
-                    } description: {
-                        Text("Club members participating in this class will appear here.")
-                    }
+            if let session = startedSession {
+                SessionAttendanceListView(sessionID: session.id) {
+                    isAddingParticipant = true
                 }
             } else {
                 Section {
@@ -85,16 +82,22 @@ struct ClassSessionView: View {
         }
         .navigationTitle(summaryName)
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $isAddingParticipant) {
+            if let session = startedSession {
+                AddParticipantView(sessionID: session.id)
+            }
+        }
     }
 
     // MARK: - Summary (rendered from the occurrence definition or the snapshot)
 
-    /// Whether a session already exists for what's being shown. History sessions
-    /// are always started.
-    private var isStarted: Bool {
+    /// The started session backing what's shown, if any. For the occurrence path
+    /// this is the live session for the occurrence's day; for history it's the
+    /// session itself. `nil` means a not-yet-started occurrence.
+    private var startedSession: ClassSession? {
         switch source {
-        case .occurrence: return occurrenceSession != nil
-        case .session: return true
+        case .occurrence: return occurrenceSession
+        case let .session(session): return session
         }
     }
 
@@ -148,7 +151,7 @@ struct ClassSessionView: View {
 
 #Preview("From occurrence") {
     let container = try! ModelContainer(
-        for: TrainingClass.self, ScheduleEntry.self, ClassSession.self, Member.self, Dog.self, Combination.self,
+        for: TrainingClass.self, ScheduleEntry.self, ClassSession.self, Member.self, Dog.self, Combination.self, SessionAttendance.self,
         configurations: ModelConfiguration(isStoredInMemoryOnly: true)
     )
 
@@ -167,7 +170,7 @@ struct ClassSessionView: View {
 
 #Preview("From history session") {
     let container = try! ModelContainer(
-        for: TrainingClass.self, ScheduleEntry.self, ClassSession.self, Member.self, Dog.self, Combination.self,
+        for: TrainingClass.self, ScheduleEntry.self, ClassSession.self, Member.self, Dog.self, Combination.self, SessionAttendance.self,
         configurations: ModelConfiguration(isStoredInMemoryOnly: true)
     )
 

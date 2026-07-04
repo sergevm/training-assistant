@@ -106,15 +106,6 @@ The session detail view SHALL display a concise, read-only summary including the
 - **WHEN** the user opens a session detail view
 - **THEN** the view displays the session name, the day of week, and the start time of the session's slot
 
-### Requirement: Show placeholder participants list
-
-The session detail view SHALL include a participants section that is empty for now, presenting an empty state rather than any participant data.
-
-#### Scenario: Participants section is empty
-
-- **WHEN** the user views a session detail
-- **THEN** the participants section shows an empty state indicating no participants are recorded yet
-
 ### Requirement: Access session history
 
 The app SHALL provide an entry point from the landing screen to a screen that lists past class sessions. This entry point SHALL be distinct from the existing day's-classes entry point.
@@ -173,20 +164,28 @@ When no `ClassSession` has ever been started, the session history screen SHALL p
 
 ### Requirement: Open a session from history
 
-Tapping a session in the history list SHALL open that session's read-only detail view. The detail SHALL be rendered from the session's stored snapshot (name, day, start time) so it displays correctly even if the originating class or slot no longer exists, and SHALL show the started-session presentation — the participants placeholder and no "Start Session" action.
+Tapping a session in the history list SHALL open that session's detail view. The definition
+summary (name, day, start time) SHALL be read-only and rendered from the session's stored
+snapshot so it displays correctly even if the originating class or slot no longer exists, and the
+detail SHALL NOT offer a "Start Session" action. The detail SHALL show the session's recorded
+attendance and allow managing it.
 
 #### Scenario: Open a past session's detail
 
 - **WHEN** the user taps a session in the history list
-- **THEN** the app opens that session's detail view showing the session name, day of week, and start time from its snapshot
+- **THEN** the app opens that session's detail view showing the session name, day of week, and
+  start time from its snapshot
 
-#### Scenario: History detail is read-only started state
+#### Scenario: History detail shows attendance and no start action
 
 - **WHEN** the user views a session opened from history
-- **THEN** the detail shows the participants placeholder and does not offer a "Start Session" action
+- **THEN** the detail shows the session's recorded attendance and does not offer a "Start Session"
+  action
 
 #### Scenario: Detail renders when origin is gone
 
-- **WHEN** the user opens the detail of a session whose originating class or slot was deleted or edited
-- **THEN** the detail still displays the session's snapshotted name, day, and start time without error
+- **WHEN** the user opens the detail of a session whose originating class or slot was deleted or
+  edited
+- **THEN** the detail still displays the session's snapshotted name, day, and start time without
+  error
 
