@@ -54,14 +54,15 @@ been entered yet — onboarding them on the spot beats an error.
 *Alternatives considered:* a bare-id payload (rejected — the real codes are URLs); rejecting
 unknown ids outright (rejected — misses the register-on-scan opportunity).
 
-### Transparent selection keys off active dogs
-On identifying a member (by scan or list), the candidate combinations are
-`member.activeCombinations` minus any already recorded present in this session. Exactly one
-candidate → record it with no prompt; more than one → prompt for the dog; zero → explain (no
-active dog, or all already recorded). A scanned `member_id` that matches no member instead opens
-the register-a-new-member flow (above) rather than reporting nothing to record.
+### Transparent selection keys off active dogs; a member attends once
+A member may attend a session only once (keyed on member id, not combination), so members already
+recorded are excluded from the add-participant list and rejected on scan ("already recorded"). For
+a not-yet-recorded member the candidates are `member.activeCombinations`: exactly one → record with
+no prompt; more than one → prompt for the dog; zero → explain (no active dog). A scanned `member_id`
+that matches no member instead opens the register-a-new-member flow (above).
 *Why:* the active flag exists precisely to drive this; it keeps the common single-dog case
-frictionless.
+frictionless. Keying de-dupe on the member (not the combination) prevents recording one person
+twice with two dogs in the same session.
 
 ### The QR scanner is gated on availability; the list is the universal path
 `AddParticipantView` offers a "Scan" affordance only when `DataScannerViewController.isSupported

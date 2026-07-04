@@ -38,6 +38,7 @@ struct ClassSessionView: View {
     /// For the session (history) path this is unused; it's scoped to that
     /// session's own id so the query stays trivial.
     @Query private var slotSessions: [ClassSession]
+    @State private var isAddingParticipant = false
 
     init(occurrence: Occurrence) {
         self.source = .occurrence(occurrence)
@@ -66,7 +67,9 @@ struct ClassSessionView: View {
             }
 
             if let session = startedSession {
-                SessionAttendanceListView(sessionID: session.id)
+                SessionAttendanceListView(sessionID: session.id) {
+                    isAddingParticipant = true
+                }
             } else {
                 Section {
                     Button {
@@ -79,6 +82,11 @@ struct ClassSessionView: View {
         }
         .navigationTitle(summaryName)
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $isAddingParticipant) {
+            if let session = startedSession {
+                AddParticipantView(sessionID: session.id)
+            }
+        }
     }
 
     // MARK: - Summary (rendered from the occurrence definition or the snapshot)

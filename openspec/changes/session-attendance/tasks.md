@@ -37,7 +37,7 @@
 
 - [x] 7.1 Run `openspec validate session-attendance --strict` and fix any issues
 - [x] 7.2 Build for an iOS 26 simulator; confirm no schema/migration errors and existing data survives
-- [ ] 7.3 Simulator (list path): start a session; add a single-active-dog member → recorded transparently; add a multi-active-dog member → dog prompt; try to re-add → blocked; remove a participant
+- [ ] 7.3 Simulator (list path): start a session; add a single-active-dog member → recorded transparently; add a multi-active-dog member → dog prompt; the same member (even with a different dog) is no longer offered / cannot be re-added; remove a participant
 - [ ] 7.4 Confirm attendance renders from its snapshot after deleting the underlying member/dog/combination
 - [ ] 7.5 Open the same session from history → attendance is shown and manageable; no "Start Session" action; definition summary read-only
 - [ ] 7.6 Device: scan a URL QR (`member_id=…`) for a known member → same selection logic; scan an unknown `member_id` → member editor opens pre-filled; scan a non-URL code → "not recognized"; camera-permission prompt appears; scan entry hidden on the simulator

@@ -6,6 +6,8 @@
 //  present, with add and remove. Rendered from each record's snapshot, so it
 //  displays correctly even after the underlying member/dog/combination changes.
 //  Owns a fixed-`sessionID` query because the session identity is fixed at init.
+//  Adding is driven by a closure so the presenting sheet lives on a stable
+//  container (the session detail), not on this List section.
 //
 
 import SwiftUI
@@ -15,11 +17,12 @@ struct SessionAttendanceListView: View {
     @Environment(\.modelContext) private var modelContext
 
     let sessionID: UUID
+    let onAddParticipant: () -> Void
     @Query private var attendance: [SessionAttendance]
-    @State private var isAddingParticipant = false
 
-    init(sessionID: UUID) {
+    init(sessionID: UUID, onAddParticipant: @escaping () -> Void) {
         self.sessionID = sessionID
+        self.onAddParticipant = onAddParticipant
         _attendance = Query(
             filter: #Predicate<SessionAttendance> { $0.sessionID == sessionID },
             sort: \SessionAttendance.recordedAt
@@ -39,13 +42,10 @@ struct SessionAttendanceListView: View {
             }
 
             Button {
-                isAddingParticipant = true
+                onAddParticipant()
             } label: {
                 Label("Add Participant", systemImage: "plus")
             }
-        }
-        .sheet(isPresented: $isAddingParticipant) {
-            AddParticipantView(sessionID: sessionID)
         }
     }
 

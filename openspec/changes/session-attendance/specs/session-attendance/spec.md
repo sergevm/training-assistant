@@ -89,24 +89,26 @@ dogs. This path SHALL be available without a camera.
 - **WHEN** the user selects a member who trains more than one active dog
 - **THEN** the system prompts the user to choose which active dog to record
 
-### Requirement: A member with no available active dog cannot be recorded
+### Requirement: A member with no active dog cannot be recorded
 
 The system SHALL record nothing, and SHALL explain why, when an identified member has no active
-dog or when every one of the member's active dogs is already recorded present in the session.
+dog.
 
 #### Scenario: Member has no active dog
 
 - **WHEN** the user identifies a member who trains no active dog
 - **THEN** the system records nothing and informs the user there is no active dog to record
 
-### Requirement: Prevent recording the same combination twice
+### Requirement: A member can attend a session only once
 
-The system SHALL NOT record the same combination as present more than once in the same session.
+The system SHALL record each member as present at most once per session; a member already
+recorded SHALL NOT be added again, even with a different dog. Members already recorded are not
+offered in the add-participant list.
 
-#### Scenario: Re-adding an already-present combination
+#### Scenario: Re-adding an already-present member
 
-- **WHEN** the user tries to record a combination already present in the session
-- **THEN** the system does not add a second record for it
+- **WHEN** the user tries to record a member already present in the session, with any dog
+- **THEN** the system does not add a second record and indicates the member is already recorded
 
 ### Requirement: Remove a participant from a session
 
