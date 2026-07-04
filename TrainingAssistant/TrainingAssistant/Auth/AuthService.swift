@@ -53,7 +53,17 @@ final class AuthService {
     /// Whether a usable Supabase configuration was found at launch.
     var isConfigured: Bool { client != nil }
     /// Whether a user is currently signed in.
-    var isSignedIn: Bool { session != nil }
+    ///
+    /// In Debug simulator builds we short-circuit to `true` so day-to-day UI work and
+    /// (future) UI tests don't have to clear the Apple/Google login gate. This branch is
+    /// compiled out of every device and Release build, so production auth is unaffected.
+    var isSignedIn: Bool {
+        #if DEBUG && targetEnvironment(simulator)
+        return true
+        #else
+        return session != nil
+        #endif
+    }
 
     private let config: SupabaseConfig?
     private let client: SupabaseClient?
