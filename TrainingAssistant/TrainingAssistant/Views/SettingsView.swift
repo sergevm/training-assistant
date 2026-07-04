@@ -19,18 +19,20 @@ struct SettingsView: View {
     @State private var showsSignOutConfirmation = false
 
     var body: some View {
-        Group {
-            if classes.isEmpty {
-                ContentUnavailableView {
-                    Label("No Classes Yet", systemImage: "calendar.badge.plus")
-                } description: {
-                    Text("Add a class to start setting up your school's weekly schedule.")
-                } actions: {
-                    Button("Add Class") { startAddingClass() }
-                        .buttonStyle(.borderedProminent)
+        List {
+            Section("Club") {
+                NavigationLink {
+                    MembersView()
+                } label: {
+                    Label("Members", systemImage: "person.2")
                 }
-            } else {
-                List {
+            }
+
+            Section("Classes") {
+                if classes.isEmpty {
+                    Text("No classes yet. Tap + to add one.")
+                        .foregroundStyle(.secondary)
+                } else {
                     ForEach(classes) { trainingClass in
                         NavigationLink {
                             ClassEditorView(trainingClass: trainingClass)
@@ -42,7 +44,7 @@ struct SettingsView: View {
                 }
             }
         }
-        .navigationTitle("Classes")
+        .navigationTitle("Settings")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button(role: .destructive) {
@@ -140,5 +142,5 @@ private struct ClassRow: View {
         SettingsView()
     }
     .environment(AuthService())
-    .modelContainer(for: [TrainingClass.self, ScheduleEntry.self], inMemory: true)
+    .modelContainer(for: [TrainingClass.self, ScheduleEntry.self, ClassSession.self, Member.self, Dog.self, Combination.self], inMemory: true)
 }
