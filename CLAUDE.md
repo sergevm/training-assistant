@@ -29,9 +29,20 @@ endlessly — tapping a row stacks the same screen in an infinite loop. The
 `item:`-based pattern above is proven in `TodayClassesView` and
 `SessionHistoryView`; match it for all row → detail navigation.
 
-Add `.contentShape(Rectangle())` to any tappable row so the **whole** row is
-hittable, not just its text/icon. Under `.buttonStyle(.plain)` a `Spacer()` gap is
-transparent and therefore not tappable without it.
+Make the **whole** row of a tappable button hittable, not just its text/icon, by
+applying **both** modifiers to the label:
+
+```swift
+.frame(maxWidth: .infinity, alignment: .leading)
+.contentShape(Rectangle())
+```
+
+`.contentShape(Rectangle())` only extends hit-testing over the label's own frame —
+a leading-aligned `VStack` or a bare `Label` is only as wide as its text, so the
+shape must be preceded by the full-width frame. Under `.buttonStyle(.plain)` a
+`Spacer()` gap is transparent and therefore not tappable without the content
+shape. `NavigationLink` rows don't need any of this; they are full-row tappable
+natively.
 
 ### SwiftData models are self-contained snapshots
 

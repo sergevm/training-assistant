@@ -91,8 +91,10 @@ struct SessionHistoryView: View {
             Text(session.startTimeDisplay)
                 .foregroundStyle(.secondary)
         }
-        // Make the whole row tappable, not just the text — the Spacer gap is
-        // otherwise not hittable under .buttonStyle(.plain).
+        // Make the whole row tappable, not just the text: stretch to the full
+        // row width, then give the transparent area an explicit hit shape
+        // (a Spacer gap is not hittable under .buttonStyle(.plain)).
+        .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(Rectangle())
     }
 }

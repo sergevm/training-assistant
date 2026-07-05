@@ -67,6 +67,10 @@ struct MemberEditorView: View {
                     isAddingCombination = true
                 } label: {
                     Label("Add Dog", systemImage: "plus")
+                        // Full row width + explicit shape so the whole row is
+                        // tappable, not just the label.
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(Rectangle())
                 }
             }
         }

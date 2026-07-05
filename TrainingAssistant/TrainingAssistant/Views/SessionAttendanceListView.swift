@@ -45,6 +45,10 @@ struct SessionAttendanceListView: View {
                 onAddParticipant()
             } label: {
                 Label("Add Participant", systemImage: "plus")
+                    // Full row width + explicit shape so the whole row is
+                    // tappable, not just the label.
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .contentShape(Rectangle())
             }
         }
     }

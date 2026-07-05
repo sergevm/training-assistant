@@ -197,6 +197,9 @@ private struct SharedDogListView: View {
                                     .foregroundStyle(.secondary)
                             }
                         }
+                        // Stretch to the full row width, then give the
+                        // transparent area an explicit hit shape.
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
