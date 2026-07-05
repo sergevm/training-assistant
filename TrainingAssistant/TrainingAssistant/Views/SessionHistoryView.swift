@@ -56,6 +56,7 @@ struct SessionHistoryView: View {
         .navigationDestination(item: $selectedSession) { session in
             ClassSessionView(session: session)
         }
+        .appMenuToolbar()
     }
 
     // MARK: - Grouping

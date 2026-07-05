@@ -69,6 +69,7 @@ struct TodayClassesView: View {
         .navigationDestination(item: $selectedOccurrence) { occurrence in
             ClassSessionView(occurrence: occurrence)
         }
+        .appMenuToolbar()
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Picker("Show", selection: $filter) {
