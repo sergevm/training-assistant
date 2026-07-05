@@ -60,6 +60,10 @@ struct TodayClassesView: View {
             }
         }
         .navigationTitle("Today")
+        // Runs on first presentation and again when a pushed detail is popped —
+        // deliberately not on data changes, so a manually chosen filter is never
+        // yanked away while the user is looking at it.
+        .onAppear(perform: autoSelectStartedFilter)
         // Navigation is driven by @State, not the list rows, so a session that
         // leaves the current filter mid-visit doesn't pop the pushed detail.
         .navigationDestination(item: $selectedOccurrence) { occurrence in
@@ -85,6 +89,15 @@ struct TodayClassesView: View {
 
     private var filteredOccurrences: [Occurrence] {
         todaysOccurrences.filter { filter == .started ? $0.isStarted : !$0.isStarted }
+    }
+
+    /// When nothing is left to start but sessions are running, land on "Started"
+    /// instead of an empty "To start" list. Only ever switches in that direction.
+    private func autoSelectStartedFilter() {
+        guard filter == .toStart else { return }
+        let occurrences = todaysOccurrences
+        guard !occurrences.isEmpty, occurrences.allSatisfy(\.isStarted) else { return }
+        filter = .started
     }
 
     private var emptyFilterTitle: String {
