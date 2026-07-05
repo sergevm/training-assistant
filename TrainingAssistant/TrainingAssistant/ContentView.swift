@@ -40,6 +40,7 @@ struct ContentView: View {
             }
             .padding()
             .navigationTitle("Training Assistant")
+            .appMenuToolbar()
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {
