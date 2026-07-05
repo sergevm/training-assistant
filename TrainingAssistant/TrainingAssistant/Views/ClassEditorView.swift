@@ -48,6 +48,10 @@ struct ClassEditorView: View {
                     isAddingEntry = true
                 } label: {
                     Label("Add Session", systemImage: "plus")
+                        // Full row width + explicit shape so the whole row is
+                        // tappable, not just the label.
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(Rectangle())
                 }
             }
         }

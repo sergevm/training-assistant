@@ -76,6 +76,10 @@ struct ClassSessionView: View {
                         startSession()
                     } label: {
                         Label("Start Session", systemImage: "play.fill")
+                            // Full row width + explicit shape so the whole row
+                            // is tappable, not just the label.
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(Rectangle())
                     }
                 }
             }

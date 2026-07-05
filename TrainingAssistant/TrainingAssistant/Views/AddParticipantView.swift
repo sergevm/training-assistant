@@ -44,6 +44,10 @@ struct AddParticipantView: View {
                             isScanning = true
                         } label: {
                             Label("Scan Member QR", systemImage: "qrcode.viewfinder")
+                                // Full row width + explicit shape so the whole
+                                // row is tappable, not just the label.
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .contentShape(Rectangle())
                         }
                     }
                 }
@@ -58,6 +62,10 @@ struct AddParticipantView: View {
                                 selectMember(member)
                             } label: {
                                 MemberPickRow(member: member)
+                                    // The row is only as wide as its text, so
+                                    // stretch it before giving it a hit shape —
+                                    // contentShape alone covers just the label.
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                                     .contentShape(Rectangle())
                             }
                             .buttonStyle(.plain)
