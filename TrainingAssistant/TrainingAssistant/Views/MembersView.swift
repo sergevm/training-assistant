@@ -8,6 +8,7 @@
 
 import SwiftUI
 import SwiftData
+import VisionKit
 
 struct MembersView: View {
     @Environment(\.modelContext) private var modelContext
@@ -114,7 +115,9 @@ private struct MemberRow: View {
 
 /// Add-member sheet: a small form capturing the club id and name. The club id
 /// must be non-empty and unique (trimmed, case-sensitive — it is an externally
-/// issued token, not folded like class names).
+/// issued token, not folded like class names). On devices with a live scanner,
+/// scanning the member's QR code pre-fills the club id; the member is still
+/// only created when the form is confirmed.
 private struct AddMemberView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
@@ -125,10 +128,23 @@ private struct AddMemberView: View {
     @State private var firstName = ""
     @State private var lastName = ""
     @State private var showsDuplicateAlert = false
+    @State private var duplicateID = ""
+    @State private var showsInvalidScanAlert = false
+    @State private var isScanning = false
 
     var body: some View {
         NavigationStack {
             Form {
+                if scanningAvailable {
+                    Section {
+                        Button {
+                            isScanning = true
+                        } label: {
+                            Label("Scan Member QR", systemImage: "qrcode.viewfinder")
+                        }
+                    }
+                }
+
                 Section("Club Member") {
                     TextField("Member ID", text: $clubMemberID)
                         .textInputAutocapitalization(.never)
@@ -151,22 +167,70 @@ private struct AddMemberView: View {
             .alert("Member Already Exists", isPresented: $showsDuplicateAlert) {
                 Button("OK", role: .cancel) { }
             } message: {
-                Text("A member with id “\(trimmedClubID)” already exists.")
+                Text("A member with id “\(duplicateID)” already exists.")
+            }
+            .alert("Not recognized", isPresented: $showsInvalidScanAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("That code isn't a valid member QR code.")
+            }
+            .fullScreenCover(isPresented: $isScanning) {
+                scannerCover
             }
         }
+    }
+
+    private var scannerCover: some View {
+        NavigationStack {
+            MemberScannerView { payload in
+                isScanning = false
+                handleScan(payload)
+            }
+            .ignoresSafeArea()
+            .navigationTitle("Scan Member QR")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { isScanning = false }
+                }
+            }
+        }
+    }
+
+    private var scanningAvailable: Bool {
+        DataScannerViewController.isSupported && DataScannerViewController.isAvailable
+    }
+
+    /// Pre-fill the club id from a scanned QR payload. Invalid payloads and
+    /// already-registered ids leave the form unchanged and inform the user.
+    private func handleScan(_ payload: String) {
+        guard let scannedID = MemberQRCode.memberID(fromURL: payload) else {
+            showsInvalidScanAlert = true
+            return
+        }
+        guard !isRegistered(scannedID) else {
+            duplicateID = scannedID
+            showsDuplicateAlert = true
+            return
+        }
+        clubMemberID = scannedID
     }
 
     private var trimmedClubID: String {
         clubMemberID.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
+    private func isRegistered(_ id: String) -> Bool {
+        existingMembers.contains {
+            $0.clubMemberID.trimmingCharacters(in: .whitespacesAndNewlines) == id
+        }
+    }
+
     private func addMember() {
         let id = trimmedClubID
         guard !id.isEmpty else { return }
-        let isDuplicate = existingMembers.contains {
-            $0.clubMemberID.trimmingCharacters(in: .whitespacesAndNewlines) == id
-        }
-        guard !isDuplicate else {
+        guard !isRegistered(id) else {
+            duplicateID = id
             showsDuplicateAlert = true
             return
         }

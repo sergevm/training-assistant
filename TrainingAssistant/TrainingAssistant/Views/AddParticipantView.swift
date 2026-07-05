@@ -153,7 +153,7 @@ struct AddParticipantView: View {
     // MARK: - Scan handling
 
     private func handleScan(_ payload: String) {
-        guard let scannedID = Self.memberID(fromURL: payload) else {
+        guard let scannedID = MemberQRCode.memberID(fromURL: payload) else {
             message = ScanMessage(title: "Not recognized", text: "That code isn't a valid member QR code.")
             return
         }
@@ -168,15 +168,6 @@ struct AddParticipantView: View {
             try? modelContext.save()
             registeringMember = newMember
         }
-    }
-
-    /// Extract the `member_id` query-string parameter from a URL QR payload.
-    static func memberID(fromURL payload: String) -> String? {
-        guard let components = URLComponents(string: payload),
-              let value = components.queryItems?.first(where: { $0.name == "member_id" })?.value
-        else { return nil }
-        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
-        return trimmed.isEmpty ? nil : trimmed
     }
 
     // MARK: - Derived state
