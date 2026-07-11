@@ -36,7 +36,7 @@ struct TodayClassesView: View {
                 ContentUnavailableView {
                     Label("No Classes Today", systemImage: "calendar.badge.exclamationmark")
                 } description: {
-                    Text("No classes are scheduled for today. Set up classes and their weekly schedule in Settings.")
+                    Text("No classes are scheduled for today. Set up classes and their weekly schedule via the menu → Classes.")
                 }
             } else {
                 List {
@@ -172,5 +172,6 @@ private struct OccurrenceRow: View {
     return NavigationStack {
         TodayClassesView()
     }
+    .environment(AuthService())
     .modelContainer(container)
 }

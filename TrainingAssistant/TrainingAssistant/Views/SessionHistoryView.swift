@@ -133,5 +133,6 @@ struct SessionHistoryView: View {
     return NavigationStack {
         SessionHistoryView()
     }
+    .environment(AuthService())
     .modelContainer(container)
 }

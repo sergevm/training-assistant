@@ -3,22 +3,6 @@
 ## Purpose
 TBD - created by archiving change training-schedule-settings. Update Purpose after archive.
 ## Requirements
-### Requirement: Settings entry point
-
-The app SHALL provide a Settings area, reachable from the main screen. The
-Settings area SHALL provide an entry to a dedicated Classes screen from which the
-user can manage classes and their schedules.
-
-#### Scenario: Open settings from main screen
-
-- **WHEN** the user taps the Settings control on the main screen
-- **THEN** the app navigates to the Settings screen showing an entry to the Classes screen
-
-#### Scenario: Open the Classes screen from Settings
-
-- **WHEN** the user selects the Classes entry on the Settings screen
-- **THEN** the app navigates to the Classes screen showing the list of classes
-
 ### Requirement: Create a class
 
 The system SHALL allow the user to create a class identified by a name. The name MUST be non-empty after trimming surrounding whitespace.
@@ -55,8 +39,8 @@ The system SHALL NOT create or rename a class such that its name duplicates anot
 ### Requirement: List classes
 
 The system SHALL display all persisted classes on the Classes screen, ordered by
-name. The Classes screen SHALL be reachable from Settings and from the hamburger
-menu on the primary screens.
+name. The Classes screen SHALL be reachable from the hamburger menu on the
+primary screens.
 
 #### Scenario: View existing classes
 
