@@ -5,15 +5,15 @@ TBD - created by archiving change member-dog-combinations. Update Purpose after 
 ## Requirements
 ### Requirement: Club management entry point
 
-The app SHALL provide a Club area, reachable from Settings, from which the user can manage
-members. Dogs are managed in the context of the member who trains them, not as a standalone
-list.
+The app SHALL provide access to member management from the hamburger menu on the
+primary screens, from which the user can manage members. Dogs are managed in the
+context of the member who trains them, not as a standalone list.
 
-#### Scenario: Open the Club area from Settings
+#### Scenario: Open Members from the hamburger menu
 
-- **WHEN** the user opens Settings
-- **THEN** a Club section is shown with an entry to manage Members
-- **AND** the existing Classes management remains available
+- **WHEN** the user opens the hamburger menu on a primary screen
+- **THEN** a Members entry is shown that navigates to the Members screen
+- **AND** the existing Classes management remains available from the same menu
 
 ### Requirement: Create a member
 

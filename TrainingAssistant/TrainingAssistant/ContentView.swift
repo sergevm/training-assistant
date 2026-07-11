@@ -18,7 +18,7 @@ struct ContentView: View {
                     .foregroundStyle(.tint)
                 Text("Training Assistant")
                     .font(.title2.weight(.semibold))
-                Text("Set up your school's classes and weekly schedule in Settings.")
+                Text("Set up your school's classes and weekly schedule from the menu at the top right.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -41,20 +41,12 @@ struct ContentView: View {
             .padding()
             .navigationTitle("Training Assistant")
             .appMenuToolbar()
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink {
-                        SettingsView()
-                    } label: {
-                        Label("Settings", systemImage: "gearshape")
-                    }
-                }
-            }
         }
     }
 }
 
 #Preview {
     ContentView()
+        .environment(AuthService())
         .modelContainer(for: [TrainingClass.self, ScheduleEntry.self, ClassSession.self, Member.self, Dog.self, Combination.self, SessionAttendance.self], inMemory: true)
 }

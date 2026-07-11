@@ -54,7 +54,7 @@ struct AddParticipantView: View {
 
                 Section("Members") {
                     if filteredMembers.isEmpty {
-                        Text("No members. Add members in Settings → Club.")
+                        Text("No members. Add members via the menu → Members.")
                             .foregroundStyle(.secondary)
                     } else {
                         ForEach(filteredMembers) { member in

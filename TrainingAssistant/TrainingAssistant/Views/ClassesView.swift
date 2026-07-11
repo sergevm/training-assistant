@@ -3,7 +3,7 @@
 //  TrainingAssistant
 //
 //  Manage the school's classes and their weekly schedules. Reachable from
-//  Settings and from the hamburger menu on the primary screens.
+//  the hamburger menu on the primary screens.
 //
 
 import SwiftUI
